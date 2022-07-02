@@ -1,0 +1,25 @@
+{
+  "name": "team_profile_generator",
+  "version": "1.0.0",
+  "description": "Nodejs command line application that will take work team info and generate an HTML page with their profiles.",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest",
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Unicorn-Barf/Team_Profile_Generator.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Unicorn-Barf/Team_Profile_Generator/issues"
+  },
+  "homepage": "https://github.com/Unicorn-Barf/Team_Profile_Generator#readme",
+  "dependencies": {
+    "inquirer": "^9.0.0",
+    "jest": "^28.1.2"
+  }
+}
