@@ -69,7 +69,6 @@ const addMoreQ = [
         name: 'email',
         type: 'input',
         default: 'yasskween@hotmail.com',
-        // define validation functions separately
         validate: validation.emailVal,
     },
     {

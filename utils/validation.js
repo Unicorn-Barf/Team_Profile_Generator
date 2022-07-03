@@ -15,7 +15,7 @@ const nameVal = (answer) => {
         return "You have to provide a valid name!"
     }
     return true
-}
+};
 
 module.exports = {
     emailVal,
