@@ -1,6 +1,8 @@
 const inquirer = require('inquirer');
 const fs = require('fs');
 const generateHTML = require('./utils/generateHTML');
+const validation = require('./utils/validation');
+
 
 // Question Objects for inquire
 
@@ -11,6 +13,7 @@ const managerQ = [
         name: 'name',
         type: 'input',
         default: 'Mr. Brooks',
+        validate: validation.nameVal,
     },
     {
         message: "What is the manager's employee ID?",
@@ -24,13 +27,7 @@ const managerQ = [
         type: 'input',
         default: 'yasskween@hotmail.com',
         // define validation functions separately
-        validate: (answer) => {
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-            if(!emailRegex.test(answer)) {
-                return "You have to provide a valid email address!"
-            }
-            return true
-        }
+        validate: validation.emailVal,
     },
     {
         message: "What is the manager's office number?",
@@ -59,6 +56,7 @@ const addMoreQ = [
         name: 'name',
         type: 'input',
         default: 'Mr. Brooks',
+        validate: validation.nameVal,
     },
     {
         message: "What is their ID?",
@@ -72,13 +70,7 @@ const addMoreQ = [
         type: 'input',
         default: 'yasskween@hotmail.com',
         // define validation functions separately
-        validate: (answer) => {
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-            if(!emailRegex.test(answer)) {
-                return "You have to provide a valid email address!"
-            }
-            return true
-        },
+        validate: validation.emailVal,
     },
     {
         message: "What is the engineer's Github username?",

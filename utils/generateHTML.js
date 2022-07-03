@@ -8,13 +8,13 @@ function managerHTML(data) {
   return `<div class="card bg-primary mb-3" id="member-card">
   <div class="card-header bg-primary text-white">
       <h1>${manager.getName()}</h1>
-      <h2>${manager.getRole()}</h2>
+      <h2 class="manager-role"><img src="./images/coffee-cup.png"> ${manager.getRole()}</h2>
   </div>
   <div class="card-body bg-light text-black">
       <!-- List Group for card content -->
       <ul class="list-group list-group-flush bg-white">
           <li class="list-group-item">ID: ${manager.getId()}</li>
-          <li class="list-group-item">Email: ${manager.getEmail()}</li>
+          <li class="list-group-item">Email: <a href="mailto:${manager.getEmail()}">${manager.getEmail()}</a></li>
           <li class="list-group-item">Office Number: ${manager.officeNum}</li>
       </ul>
   </div>
@@ -31,30 +31,30 @@ function teamHTML(teamArr) {
         teamEls += `<div class="card bg-primary mb-3" id="member-card">
   <div class="card-header bg-primary text-white">
       <h1>${engineer.getName()}</h1>
-      <h2>${engineer.getRole()}</h2>
+      <h2 class="engineer-role"><img src="./images/sunglasses.png"> ${engineer.getRole()}</h2>
   </div>
   <div class="card-body bg-light text-black">
       <!-- List Group for card content -->
       <ul class="list-group list-group-flush bg-white">
           <li class="list-group-item">ID: ${engineer.getId()}</li>
-          <li class="list-group-item">Email: ${engineer.getEmail()}</li>
-          <li class="list-group-item">Github: ${engineer.github}</li>
+          <li class="list-group-item">Email: <a href="mailto:${engineer.getEmail()}">${engineer.getEmail()}</a></li>
+          <li class="list-group-item">Github: <a href="https://github.com/${engineer.github}" target="_blank">${engineer.github}</a></li>
       </ul>
   </div>
 </div>\n`
       }
       else {
-        const intern = new Intern(member.name, member.id, member.email, member.github);
+        const intern = new Intern(member.name, member.id, member.email, member.school);
         teamEls += `<div class="card bg-primary mb-3" id="member-card">
   <div class="card-header bg-primary text-white">
       <h1>${intern.getName()}</h1>
-      <h2>${intern.getRole()}</h2>
+      <h2 class="intern-role"><img src="./images/graduate-cap.png"> ${intern.getRole()}</h2>
   </div>
   <div class="card-body bg-light text-black">
       <!-- List Group for card content -->
       <ul class="list-group list-group-flush bg-white">
           <li class="list-group-item">ID: ${intern.getId()}</li>
-          <li class="list-group-item">Email: ${intern.getEmail()}</li>
+          <li class="list-group-item">Email: <a href="mailto:${intern.getEmail()}">${intern.getEmail()}</a></li>
           <li class="list-group-item">School: ${intern.school}</li>
       </ul>
   </div>
