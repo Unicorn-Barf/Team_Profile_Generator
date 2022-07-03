@@ -8,7 +8,7 @@ function managerHTML(data) {
   return `<div class="card bg-primary mb-3" id="member-card">
   <div class="card-header bg-primary text-white">
       <h1>${manager.getName()}</h1>
-      <h1>${manager.getRole()}</h1>
+      <h2>${manager.getRole()}</h2>
   </div>
   <div class="card-body bg-light text-black">
       <!-- List Group for card content -->
@@ -31,7 +31,7 @@ function teamHTML(teamArr) {
         teamEls += `<div class="card bg-primary mb-3" id="member-card">
   <div class="card-header bg-primary text-white">
       <h1>${engineer.getName()}</h1>
-      <h1>${engineer.getRole()}</h1>
+      <h2>${engineer.getRole()}</h2>
   </div>
   <div class="card-body bg-light text-black">
       <!-- List Group for card content -->
@@ -48,7 +48,7 @@ function teamHTML(teamArr) {
         teamEls += `<div class="card bg-primary mb-3" id="member-card">
   <div class="card-header bg-primary text-white">
       <h1>${intern.getName()}</h1>
-      <h1>${intern.getRole()}</h1>
+      <h2>${intern.getRole()}</h2>
   </div>
   <div class="card-body bg-light text-black">
       <!-- List Group for card content -->
@@ -86,7 +86,7 @@ function generateHTML(managerAns, teamArr) {
     <title>Document</title>
   </head>
   <body>
-    <div class="jumbotron jumbotron-fluid jumbotron-danger">
+    <div class="jumbotron jumbotron-fluid text-center text-white bg-danger">
       <div class="container">
         <h1 class="display-4">My Team</h1>
         <p class="lead">Meet the people that make it happen!</p>
