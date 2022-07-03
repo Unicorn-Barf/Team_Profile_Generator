@@ -1,0 +1,11 @@
+#team-div {
+    margin-top: 200px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+#member-card {
+    width: 350px;
+    margin: 25px 25px;
+}

@@ -5,7 +5,7 @@ const Intern = require('../lib/Intern');
 // Function to generate Manager HTML elements from inquire data
 function managerHTML(data) {
   const manager = new Manager(data.name, data.id, data.email, data.officeNum);
-  return `<div class="card bg-primary mb-3" style="max-width: 18rem;">
+  return `<div class="card bg-primary mb-3" id="member-card">
   <div class="card-header bg-primary text-white">
       <h1>${manager.getName()}</h1>
       <h1>${manager.getRole()}</h1>
@@ -28,7 +28,7 @@ function teamHTML(teamArr) {
     for (member of teamArr) {
       if (member.memberType === 'Engineer') {
         const engineer = new Engineer(member.name, member.id, member.email, member.github);
-        teamEls += `<div class="card bg-primary mb-3" style="max-width: 18rem;">
+        teamEls += `<div class="card bg-primary mb-3" id="member-card">
   <div class="card-header bg-primary text-white">
       <h1>${engineer.getName()}</h1>
       <h1>${engineer.getRole()}</h1>
@@ -45,7 +45,7 @@ function teamHTML(teamArr) {
       }
       else {
         const intern = new Intern(member.name, member.id, member.email, member.github);
-        teamEls += `<div class="card bg-primary mb-3" style="max-width: 18rem;">
+        teamEls += `<div class="card bg-primary mb-3" id="member-card">
   <div class="card-header bg-primary text-white">
       <h1>${intern.getName()}</h1>
       <h1>${intern.getRole()}</h1>
@@ -75,7 +75,7 @@ function generateHTML(managerAns, teamArr) {
   // create html to return
   return `<!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -84,19 +84,24 @@ function generateHTML(managerAns, teamArr) {
     integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="./css/style.css">
     <title>Document</title>
-</head>
-<body>
-    <h1>My Team</h1>
+  </head>
+  <body>
+    <div class="jumbotron jumbotron-fluid jumbotron-danger">
+      <div class="container">
+        <h1 class="display-4">My Team</h1>
+        <p class="lead">Meet the people that make it happen!</p>
+      </div>
+    </div>
     <div id="team-div">    
-    ${manager}
-    ${team}
+      ${manager}
+      ${team}
     </div>
     <!-- boostrap scripts -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
     <script src="./assets/js/index.js"></script>
-</body>
+  </body>
 </html>`
 };
   
