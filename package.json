@@ -19,7 +19,7 @@
   },
   "homepage": "https://github.com/Unicorn-Barf/Team_Profile_Generator#readme",
   "dependencies": {
-    "inquirer": "^9.0.0",
+    "inquirer": "^6.3.1",
     "jest": "^28.1.2"
   }
 }

@@ -1,6 +1,6 @@
 const inquirer = require('inquirer');
 const fs = require('fs');
-const generateHTML = require('../../tests/utils/generateHTML');
+const generateHTML = require('./utils/generateHTML');
 
 // Question Objects for inquire
 
@@ -8,19 +8,19 @@ const generateHTML = require('../../tests/utils/generateHTML');
 const managerQ = [
     {
         message: 'What is the name of the team manager?',
-        name: 'managerName',
+        name: 'name',
         type: 'input',
         default: 'Mr. Brooks',
     },
     {
         message: "What is the manager's employee ID?",
-        name: 'managerID',
+        name: 'id',
         type: 'number',
         default: '0',
     },
     {
         message: "What is the manager's email address?",
-        name: 'managerEmail',
+        name: 'email',
         type: 'input',
         default: 'yasskween@hotmail.com',
         // define validation functions separately
@@ -34,7 +34,7 @@ const managerQ = [
     },
     {
         message: "What is the manager's office number?",
-        name: 'managerOffice',
+        name: 'officeNum',
         type: 'number',
         default: '666',
     },
@@ -53,31 +53,22 @@ const addMoreQ = [
         name: 'memberType',
         type: 'list',
         choices: ['Engineer', 'Intern'],
-        when(answers) {
-            return answers.addTeamMember === "Add Member";
-        }
     },
     {
-        message: 'What is the name of the engineer?',
-        name: 'engineerName',
+        message: 'What is their name?',
+        name: 'name',
         type: 'input',
         default: 'Mr. Brooks',
-        when(answers) {
-            return answers.memberType === "Engineer";
-        },
     },
     {
-        message: "What is the engineer's employee ID?",
-        name: 'engineerID',
+        message: "What is their ID?",
+        name: 'id',
         type: 'number',
         default: '0',
-        when(answers) {
-            return answers.memberType === "Engineer";
-        },
     },
     {
-        message: "What is the engineer's email address?",
-        name: 'engineerEmail',
+        message: "What is their email address?",
+        name: 'email',
         type: 'input',
         default: 'yasskween@hotmail.com',
         // define validation functions separately
@@ -88,13 +79,10 @@ const addMoreQ = [
             }
             return true
         },
-        when(answers) {
-            return answers.memberType === "Engineer";
-        },
     },
     {
         message: "What is the engineer's Github username?",
-        name: 'engineerGithub',
+        name: 'github',
         type: 'input',
         default: 'Unicorn-Barf',
         when(answers) {
@@ -102,43 +90,8 @@ const addMoreQ = [
         },
     },
     {
-        message: 'What is the name of the intern?',
-        name: 'internName',
-        type: 'input',
-        default: 'Mr. Brooks',
-        when(answers) {
-            return answers.memberType === "Intern";
-        },
-    },
-    {
-        message: "What is the intern's employee ID?",
-        name: 'internID',
-        type: 'number',
-        default: '0',
-        when(answers) {
-            return answers.memberType === "Intern";
-        },
-    },
-    {
-        message: "What is the intern's email address?",
-        name: 'internEmail',
-        type: 'input',
-        default: 'yasskween@hotmail.com',
-        // define validation functions separately
-        validate: (answer) => {
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-            if(!emailRegex.test(answer)) {
-                return "You have to provide a valid email address!"
-            }
-            return true
-        },
-        when(answers) {
-            return answers.memberType === "Intern";
-        },
-    },
-    {
         message: "What is the intern's school?",
-        name: 'internSchool',
+        name: 'school',
         type: 'input',
         default: 'UCSD',
         when(answers) {
@@ -156,7 +109,7 @@ const addMoreQ = [
 // TODO: Create a function to write README file
 function writeToFile(managerData, teamArr) {
     console.log('hit');
-    fs.writeFile(`./dist/index.html`, generateHTML(managerData, teamArr), err => {
+    fs.writeFile('dist/index.html', generateHTML(managerData, teamArr), err => {
         if (err) {
             console.log(err);
             return;
@@ -170,31 +123,43 @@ function writeToFile(managerData, teamArr) {
 // TODO: Create a function to initialize app
 // This will start the user prompts in the command line to get information
 // for the REAME.md
-function init() {
+async function init() {
+    // declare a teamArr variable, null in case no team members are added
+    let teamArr = null;
     // Prompt user in command line for manager questions
-    inquirer
+    let managerData = await managerPrompt();
+    // Start team member prompts if user wants to add team members
+    if (managerData.addTeamMember === 'Add Member') {
+        teamArr = await teamPrompt();
+    }
+    // Call the write to file function with the data
+    writeToFile(managerData, teamArr);
+};
+
+// function to gather manager data from inquirer
+async function managerPrompt() {
+    // Prompt user in command line for manager questions
+    let managerData = await new Promise((resolve, reject) => {
+        inquirer
         .prompt(managerQ)
         .then(answers => {
-            let managerAns = answers;
-            let teamArr = [];
-            // Create boolean to only prompt team member inquire if user wants to add team member
-            let addBoolean = answers.addTeamMember === 'Add Member';
-            while (addBoolean) {
-                // Prompt user in the command line for team member questions
-                inquirer
-                    .prompt(addMoreQ)
-                    .then(answers => {
-                        teamArr.push(answers);
-                        if (answers.addTeamMember !== 'Add Member') addBoolean = false;
-                    });
-            };
-            // Call the write to file function with the data
-            writeToFile(managerAns, teamArr);
+            resolve(answers);
         })
         .catch(err => {
-            console.log(err);
+            reject(err);
         });
-};
+    });
+    return managerData;
+}
+
+async function teamPrompt(teamArr = []) {
+    // Destructure the inquirer object
+    const { addTeamMember, ...answers } = await inquirer.prompt(addMoreQ);
+    // Build new team array by adding on new answers
+    const newTeamArr = [...teamArr, answers];
+    // Recursively call the teamPrompt() function when user wants to add more team members
+    return (addTeamMember === 'Add Member') ? teamPrompt(newTeamArr) : newTeamArr;
+}
 
 // Function call to initialize app
 init();

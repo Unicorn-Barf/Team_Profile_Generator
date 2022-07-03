@@ -19,4 +19,11 @@ describe('Engineer Class:', () => {
             expect(obj.getRole()).toBe('Engineer');
         });
     });
+
+    describe('getGithub() method', () => {
+        it('should return the Github username passed into the parameters on creation', () => {
+            const obj = new Engineer('Jasmine', 5, 'whynot@because.com', 'Unicorn-Barf');
+            expect(obj.getGithub()).toBe('Unicorn-Barf');
+        });
+    });
 });

@@ -24,6 +24,6 @@ describe('Intern Class:', () => {
         it('should return the school passed into the parameters on creation', () => {
             const obj = new Intern('Jasmine', 5, 'whynot@because.com', 'UCSD');
             expect(obj.getSchool()).toBe('UCSD');
-        })
-    })
+        });
+    });
 });
