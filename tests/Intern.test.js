@@ -2,7 +2,7 @@ const Intern = require('../lib/Intern');
 
 describe('Intern Class:', () => {
     describe('It creates a new object:', () => {
-        it('Is a new instance of a Intern class created with a name, id, email, and school', () => {
+        it('should create a new instance of an Intern with a name, id, email, and school', () => {
             const obj = new Intern('Jasmine', 5, 'whynot@because.com', 'UCSD');
             expect(obj).toBeInstanceOf(Intern);
             expect(obj.name).toBe('Jasmine');
@@ -14,7 +14,7 @@ describe('Intern Class:', () => {
 
     describe('getRole() method overrides the Employee class method', () => {
 
-        it('Has a getRole() method that returns "Intern"', () => {
+        it('should return "Intern"', () => {
             const obj = new Intern('Jasmine', 5, 'whynot@because.com', 'UCSD');
             expect(obj.getRole()).toBe('Intern');
         });

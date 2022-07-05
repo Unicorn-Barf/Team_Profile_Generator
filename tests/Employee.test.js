@@ -2,7 +2,7 @@ const Employee = require('../lib/Employee');
 
 describe('Employee Class:', () => {
     describe('It creates a new object:', () => {
-        it('Is a new instance of Employee object created with a name, id, and email', () => {
+        it('Should create a new instance of Employee object with a name, id, and email', () => {
             const obj = new Employee('Jasmine', 5, 'whynot@because.com');
             expect(obj).toBeInstanceOf(Employee);
             expect(obj.name).toBe('Jasmine');

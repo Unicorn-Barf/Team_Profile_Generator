@@ -12,14 +12,14 @@ const managerQ = [
         message: 'What is the name of the team manager?',
         name: 'name',
         type: 'input',
-        default: 'Mr. Brooks',
+        default: 'Mr. Big',
         validate: validation.nameVal,
     },
     {
         message: "What is the manager's employee ID?",
         name: 'id',
         type: 'input',
-        default: '0',
+        default: '777',
         validate: validation.numberVal,
     },
     {
@@ -56,28 +56,28 @@ const addMoreQ = [
         message: 'What is their name?',
         name: 'name',
         type: 'input',
-        default: 'Mr. Brooks',
+        default: 'Miss Thang',
         validate: validation.nameVal,
     },
     {
         message: "What is their ID?",
         name: 'id',
         type: 'input',
-        default: '0',
+        default: '13',
         validate: validation.numberVal,
     },
     {
         message: "What is their email address?",
         name: 'email',
         type: 'input',
-        default: 'yasskween@hotmail.com',
+        default: 'youbettawerk@rupaul.com',
         validate: validation.emailVal,
     },
     {
         message: "What is the engineer's Github username?",
         name: 'github',
         type: 'input',
-        default: 'Unicorn-Barf',
+        default: 'Hair-Whips',
         when(answers) {
             return answers.memberType === "Engineer";
         },
@@ -87,7 +87,7 @@ const addMoreQ = [
         message: "What is the intern's school?",
         name: 'school',
         type: 'input',
-        default: 'UCSD',
+        default: 'Shangela School of Cosmotology',
         when(answers) {
             return answers.memberType === "Intern";
         },
@@ -122,7 +122,6 @@ async function init() {
     let teamArr = null;
     // Prompt user in command line for manager questions
     let managerData = await managerPrompt();
-    console.log(managerData);
     // Start team member prompts if user wants to add team members
     if (managerData.addTeamMember === 'Add Member') {
         teamArr = await teamPrompt();
