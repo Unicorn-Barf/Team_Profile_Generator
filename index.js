@@ -6,7 +6,7 @@ const validation = require('./utils/validation');
 
 // Question Objects for inquire
 
-// Gets Manager information
+// Manager information
 const managerQ = [
     {
         message: 'What is the name of the team manager?',
@@ -18,22 +18,23 @@ const managerQ = [
     {
         message: "What is the manager's employee ID?",
         name: 'id',
-        type: 'number',
+        type: 'input',
         default: '0',
+        validate: validation.numberVal,
     },
     {
         message: "What is the manager's email address?",
         name: 'email',
         type: 'input',
         default: 'yasskween@hotmail.com',
-        // define validation functions separately
         validate: validation.emailVal,
     },
     {
         message: "What is the manager's office number?",
         name: 'officeNum',
-        type: 'number',
+        type: 'input',
         default: '666',
+        validate: validation.numberVal,
     },
     {
         message: "Add another team member or finish building team?",
@@ -43,7 +44,7 @@ const managerQ = [
     },
 ];
 
-// Asks to add an additional engineer or intern
+// additional engineer or intern
 const addMoreQ = [
     {
         message: "Are they an Engineer or and Intern?",
@@ -61,8 +62,9 @@ const addMoreQ = [
     {
         message: "What is their ID?",
         name: 'id',
-        type: 'number',
+        type: 'input',
         default: '0',
+        validate: validation.numberVal,
     },
     {
         message: "What is their email address?",
@@ -79,6 +81,7 @@ const addMoreQ = [
         when(answers) {
             return answers.memberType === "Engineer";
         },
+        validate: validation.githubVal,
     },
     {
         message: "What is the intern's school?",
@@ -88,6 +91,7 @@ const addMoreQ = [
         when(answers) {
             return answers.memberType === "Intern";
         },
+        validate: validation.schoolVal,
     },
     {
     message: "Add another team member or finish building team?",
@@ -148,6 +152,7 @@ async function managerPrompt() {
     // return managerData;
 }
 
+// function to gather Team Member data from inquirer
 async function teamPrompt(teamArr = []) {
     // Destructure the inquirer object
     const { addTeamMember, ...answers } = await inquirer.prompt(addMoreQ);
