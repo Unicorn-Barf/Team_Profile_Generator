@@ -80,56 +80,61 @@ This application will run from the command line.  Make sure that you are in the 
 ​
 ### What I learned
 ​
-This project challenged me to find creative ways to use `inquirer`, as well as create classes with corresponding test files.
+This project challenged me to find creative ways to use `inquirer`, as well as create classes with corresponding test files.  I will share some things I learned below and a little bit of code that I am proud of.
 
 
-First, the neccessary modules and utilities had to be imported using the `require` command.  From here, I learned how to use the inquire module.  The code below shows how I used a questions object passed to the inquire module: `.prompt(questions)`.  Inquirer returns a promise object so the necessary `.then` and `.catch` syntax was utilized to access the data that was needed.
+First, I needed to come up with a way to flexible work with varied user needs when prompting the user for information about team manager and team members.  I always wanted information on the team manager, but the team members could vary or possible not exist depending on the user case.  I decided to make two separate prompts, one for the manager information and one for the team member information; but the team member prompt had to conditionally decide what to ask depending on the member type.  I utilized inquirer's `when:` value in the question object to selectively ask questions depending on which case it was.  Here is an example of how I implemented this on an engineer specific question:
 
 ```js
-function init() {
-        inquirer
-        .prompt(questions)
-        .then(answers => {
-            writeToFile(answers.fileName, answers);
-        })
-        .catch(err => {
-            console.log(err);
-        });
-};
+    {
+        message: "What is the engineer's Github username?",
+        name: 'github',
+        type: 'input',
+        default: 'Hair-Whips',
+        when(answers) {
+            return answers.memberType === "Engineer";
+        },
+        validate: validation.githubVal,
+    },
 ```
-The application uses modularization in order to keep the code clean and DRY.  The init function starts the inquire prompts in the command line.  From here, I needed to know how to use that data.  As seen in the code sample above, `writeToFile()` is called with the promise data returned from the `inquirer.prompt()` so that the user input can be used to generate a markdown file.  Below is a the `writeToFile()` function:
+
+As shown, `when` takes a function that will return true or false to decide whether or not to ask this particular question.  Here, it only asks engineers for their github username.  As you can also see, I used the `validate:` key to make sure user input was appropriate for that question.  I implemented `validate:` on every question with an appropriate regex test.  The validation functions are found in the `/utils/validation.js` file.  Because my validation functions were strict, there was no need to filter the user input after it is accepted.
+
+The next challenge was finding a way to effectively call my team member prompt recursively in case that the user wanted to add multiple members and then appropriately storing that data.  I decided to make a function that could be called for the team member prompt.  Here is my solution:
 
 ```js
-function writeToFile(fileName, data) {
-    console.log('hit');
-    fs.writeFile(`draftReadme/${fileName}`, generateMarkdown(data), err => {
-        if (err) {
-            console.log(err);
-            return;
-        }
-        else {
-            console.log('Sucess!');
-        }
-    })
+// function to gather Team Member data from inquirer
+async function teamPrompt(teamArr = []) {
+    // Destructure the inquirer object
+    const { addTeamMember, ...answers } = await inquirer.prompt(addMoreQ);
+    // Build new team array by adding on new answers
+    const newTeamArr = [...teamArr, answers];
+    // Recursively call the teamPrompt() function when user wants to add more team members
+    return (addTeamMember === 'Add Member') ? teamPrompt(newTeamArr) : newTeamArr;
 }
 ```
 
-As seen above, the `writeToFile()` function can easily create a .md file with the file name entered by the user.  It uses the `generateMarkdown()` utility that was exported from utilities and imported into the index.js file.  It seamlessly provides the generated markdown file to be written to a new file named by the user in a separate folder called `draftReadme` to keep it from overwriting the project `REAME.md`.
+This function solved my problem by recursively calling itself when the `addTeamMember` value was selected to add a member.  This value was stored by destructuring the object returned by the inquirer prompt.  Then, a new team array was built by spreading the `teamArr` and adding the new object as seen in the code.  A simple conditional statement decides whether to call the function again with the updated array, or to return the `newTeamArray`.
+
+Finally, I learned about test driven development by writing my own test files.  In this challenge, test files were only written for class constructor files that were used to build an Employee class and subclasses that extended the Employee class.  By reading the instructional README.md directions for the project, I was able to write test files for each class using NPM jest.  One of the most important things that I learned was to be wary of the difference between `.toEqual()` and `.toBe()` when using `expect()`.  I decided that when comparing cases it was more prudent to use the `toBe()` comparitor so that the actual string characters could be accurately compared.  I am still developing knowledge on their difference, but `.toEqual()` is better used when comparing number values and booleans where as `toBe()` would be more appropriate for strings and object comparision.
 ​
 ### Continued development
 ​
-I am inspired by this project to come up with a more intesive command line app that can create custom readme outlines quickly.  It interests me to develop a version of this application that can create any README.md skeleton to fit any project type.  I would find it very useful to save time when writing a new README for any of my projects.
+This project showed me an introduction to the power of JavaScript classes and testing.  In the future, I want to take this knowledge and apply it to more complex and useful projects.  I also want to delve deeper into using mocks with jest as I didn't have ample opportunity to really explore their power with this project.
 ​
 ### Useful resources
 ​
-- [Markdown License Badges](https://gist.github.com/lukas-h/2a5d00690736b4c3a7ba) - This is a Github repo by user lukas-h; it contains copy/paste ready license badge images that are clickable links already formatted for mardown.
-- [NPM inquirer docs](https://www.npmjs.com/package/inquirer) - This is NPM's docs for the inquirer module which was a very helpful reference to make sure I was using the correct syntax in my code.
+- [Recusively call inquirer prompt](http://www.penandpaperprogrammer.com/blog/2018/12/16/repeating-questions-with-inquirerjs) - This is an concise example of how one can recursively call an inquirer prompt and appropriately store the data.
+- [NPM inquirer example code](https://pakstech.com/blog/inquirer-js/) - This is an alternative documentation on NPM inquirer for when the official docs are too difficult to sort through that I found useful for quick example code reference.
+- [Flaticon](https://www.flaticon.com/search?word=student&order_by=4) - A fun resource for getting quality icons quickly for free, I used this site for my card icons.
+- [Email Regex](https://www.formget.com/regular-expression-for-email/#:~:text=Regualr%20expression%20is%20a%20sequence,.Cd%E2%80%9D%20%2C%E2%80%9Dabc123.) - A great breakdown of a possible email testing Regex expression.
 ​
 ## Author
 ​
+Nolan Spence
 - Website - [Nolan Spence](https://unicorn-barf.github.io/Portfolio_Website_HTML_CSS/)
 - LinkedIn - [https://www.linkedin.com/in/aerospence/](https://www.linkedin.com/in/aerospence/)
 ​
 ## Acknowledgments
 ​
-Manny was great at introducing me to creating a NodeJS application.  Thanks Manny!!
+Thank you to my tutor Jacob Nordan for diving into testing with me!
