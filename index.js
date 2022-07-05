@@ -97,9 +97,8 @@ const addMoreQ = [
     },
 ]
 
-// TODO: Create a function to write README file
+// Function that uses npm filesystem to write a new index.HTML in dist directory
 function writeToFile(managerData, teamArr) {
-    console.log('hit');
     fs.writeFile('dist/index.html', generateHTML(managerData, teamArr), err => {
         if (err) {
             console.log(err);
@@ -108,7 +107,7 @@ function writeToFile(managerData, teamArr) {
         else {
             console.log('Sucess!');
         }
-    })
+    });
 }
 
 // TODO: Create a function to initialize app
@@ -119,6 +118,7 @@ async function init() {
     let teamArr = null;
     // Prompt user in command line for manager questions
     let managerData = await managerPrompt();
+    console.log(managerData);
     // Start team member prompts if user wants to add team members
     if (managerData.addTeamMember === 'Add Member') {
         teamArr = await teamPrompt();
@@ -129,18 +129,23 @@ async function init() {
 
 // function to gather manager data from inquirer
 async function managerPrompt() {
-    // Prompt user in command line for manager questions
-    let managerData = await new Promise((resolve, reject) => {
-        inquirer
+    let managerData = await inquirer
         .prompt(managerQ)
-        .then(answers => {
-            resolve(answers);
-        })
-        .catch(err => {
-            reject(err);
-        });
-    });
+        .catch(err => console.log(err));
     return managerData;
+    // Inquirer return is not typical promise return, keeping code for reference
+    // Prompt user in command line for manager questions
+    // let managerData = await new Promise((resolve, reject) => {
+    //     inquirer
+    //     .prompt(managerQ)
+    //     .then(answers => {
+    //         resolve(answers);
+    //     })
+    //     .catch(err => {
+    //         reject(err);
+    //     });
+    // });
+    // return managerData;
 }
 
 async function teamPrompt(teamArr = []) {
